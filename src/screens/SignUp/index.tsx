@@ -48,9 +48,8 @@ const SignUp: React.FC = () => {
       setIsLoading(false);
       return Alert.alert("Error", error);
     }
-
     createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
+      .then(async userCredential => {
         const user = userCredential.user;
 
         await setDoc(doc(FIREBASE_DB, `users`, user.uid), {
@@ -58,8 +57,11 @@ const SignUp: React.FC = () => {
           displayName: username,
           email: user.email,
         });
+
+        Alert.alert("Success", "Your account has been successfully created.");
+        handleLoginNavigation();
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.alert("Error", error.message);
       })
       .finally(() => {

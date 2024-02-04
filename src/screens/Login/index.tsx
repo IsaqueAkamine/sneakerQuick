@@ -55,7 +55,6 @@ const Login: React.FC = () => {
   };
 
   const handleLogin = () => {
-    console.log("login");
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
