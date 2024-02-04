@@ -6,7 +6,9 @@ const Stack = createNativeStackNavigator();
 
 export default function AppStack() {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Drawer" component={AppDrawer} />
     </Stack.Navigator>
   );
