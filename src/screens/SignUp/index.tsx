@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ActivityIndicator, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -19,7 +20,6 @@ import {
   WelcomeContainer,
   WelcomeText,
 } from "./styles";
-import { ActivityIndicator, Alert } from "react-native";
 
 const SignUp: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -73,13 +73,13 @@ const SignUp: React.FC = () => {
     <Container>
       <WelcomeContainer>
         <NikeLogo source={logo} resizeMode="contain" />
-        <WelcomeText>Bem vindo a Nike</WelcomeText>
-        <LoginText>Crie sua conta para continuar</LoginText>
+        <WelcomeText>Welcome to Sneaker Quick</WelcomeText>
+        <LoginText>Create your account to continue</LoginText>
       </WelcomeContainer>
 
       <InputsContainer>
         <Input
-          placeholder="Seu nome"
+          placeholder="Your name"
           type="user"
           value={username}
           onChangeText={setUsername}
@@ -94,13 +94,13 @@ const SignUp: React.FC = () => {
           autoCorrect={false}
         />
         <Input
-          placeholder="Senha"
+          placeholder="Password"
           type="password"
           value={password}
           onChangeText={setPassword}
         />
         <Input
-          placeholder="Confirme sua senha"
+          placeholder="Confirm your password"
           type="password"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
@@ -111,14 +111,14 @@ const SignUp: React.FC = () => {
         {isLoading ? (
           <ActivityIndicator size="small" color="#FFF" />
         ) : (
-          <LoginButtonText>Criar conta</LoginButtonText>
+          <LoginButtonText>Create account</LoginButtonText>
         )}
       </LoginButton>
 
       <AccountContainer>
-        <AccountText>Já tem uma conta? </AccountText>
+        <AccountText>Already have an account? </AccountText>
         <AccountButtonText onPress={handleLoginNavigation}>
-          Faça o login
+          Login
         </AccountButtonText>
       </AccountContainer>
     </Container>
