@@ -1,15 +1,18 @@
-import React from 'react';
-import { FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from "react";
+import { FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Container, Image, ImageButton } from './styles';
-import products from '../../data/products';
+import { Container, Image, ImageButton } from "./styles";
+import { productsSlice } from "../../store/ProductsSlice";
 
 const Product = ({ item }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const handleNavigateToDetails = () => {
-    navigation.navigate('Details', { selectedProduct: item });
+    dispatch(productsSlice.actions.setSelectedProduct(item.id));
+    navigation.navigate("Details");
   };
 
   return (
@@ -20,6 +23,8 @@ const Product = ({ item }) => {
 };
 
 const Products: React.FC = () => {
+  const products = useSelector(state => state.products.products);
+
   return (
     <Container>
       <FlatList

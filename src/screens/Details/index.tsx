@@ -1,6 +1,6 @@
-import React from 'react';
-import { FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from "react";
+import { FlatList } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   AddCartButton,
@@ -13,7 +13,9 @@ import {
   Price,
   ScrollContainer,
   Title,
-} from './styles';
+} from "./styles";
+import { cartSlice } from "../../store/cartSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const Product = ({ uri }) => (
   <ImageContainer>
@@ -21,11 +23,13 @@ const Product = ({ uri }) => (
   </ImageContainer>
 );
 
-const Details: React.FC = ({ route }) => {
-  const product = route.params.selectedProduct;
+const Details: React.FC = () => {
+  const product = useSelector(state => state.products.selectedProduct);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const handleAddToCart = () => {
+    dispatch(cartSlice.actions.addCartItem({ product }));
     navigation.goBack();
   };
 
