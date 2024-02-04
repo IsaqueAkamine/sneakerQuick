@@ -1,4 +1,5 @@
+import Details from './Details';
 import Home from './Home';
 import Products from './Products';
 
-export { Home, Products };
+export { Details, Home, Products };
