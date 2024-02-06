@@ -1,20 +1,24 @@
 import styled from "styled-components/native";
-import { Dimensions } from "react-native";
+import { Dimensions, Platform } from "react-native";
+import { getStatusBarHeight } from "react-native-iphone-x-helper";
 
 const { width, height } = Dimensions.get("window");
+
+const paddingTop = Platform.OS === "android" ? 16 : getStatusBarHeight() + 16;
 
 export const Container = styled.View`
   flex: 1;
   background-color: #fff;
-  padding: 16px;
+  padding: ${paddingTop}px 16px 16px 16px;
 `;
 
 export const WelcomeContainer = styled.View`
   align-items: center;
   justify-content: center;
+  margin: 16px 0;
 `;
 
-export const NikeLogo = styled.Image`
+export const QuickLogo = styled.Image`
   height: ${width * 0.4}px;
   aspect-ratio: 1;
 `;
@@ -24,6 +28,7 @@ export const WelcomeText = styled.Text`
   font-weight: 700;
   letter-spacing: 0.5px;
   line-height: 24px;
+  margin: 8px 0 0 0;
 `;
 
 export const LoginText = styled.Text`

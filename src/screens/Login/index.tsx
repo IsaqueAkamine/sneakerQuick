@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert } from "react-native";
+import auth from "@react-native-firebase/auth";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import * as Google from "expo-auth-session/providers/google";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
 
 import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "../../services/firebaseConfig";
+import { auth as authFirebase } from "../../services/firebaseConfig";
 
 import { AuthSlice } from "../../store/AuthSlice";
 import StorageKey from "../../enums/StorageKeys";
 
 import Input from "../../components/Input";
 import SocialLoginButton from "../../components/SocialLoginButton";
+
+import { GOOGLE_WEB_CLIENT_ID } from "@env";
 
 import {
   Container,
@@ -28,7 +35,7 @@ import {
   NewAccountButtonText,
   NewAccountContainer,
   NewAccountText,
-  NikeLogo,
+  QuickLogo,
   SeparatorContainer,
   SeparatorText,
   SocialButtonsContainer,
@@ -47,7 +54,7 @@ const Login: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const logo = require("../../assets/img/nikelogo.png");
+  const logo = require("../../assets/img/QuickLogo.png");
   const navigation = useNavigation();
 
   const handleNavigateSignUp = () => {
@@ -56,7 +63,7 @@ const Login: React.FC = () => {
 
   const handleLogin = () => {
     setIsLoading(true);
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(authFirebase, email, password)
       .then(userCredential => {
         // // Signed in
         const credential = userCredential.user;
@@ -76,33 +83,121 @@ const Login: React.FC = () => {
       });
   };
 
+  async function onGoogleButtonPress() {
+    try {
+      GoogleSignin.configure({
+        offlineAccess: false,
+        webClientId: GOOGLE_WEB_CLIENT_ID,
+        scopes: ["profile", "email"],
+      });
+
+      console.log("GOOGLE BUTTON PRESS ");
+      // Check if your device supports Google Play
+      const teste = await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      })
+        .then(data => console.log("hasPlayServices THEN ", data))
+        .catch(error => console.log("hasPlayServices ERROR ", error))
+        .finally(() => console.log("hasPlayServices FINALLY "));
+      console.log("HAS PLAY SERVICES ", teste);
+      // Get the users ID token
+      const { idToken } = await GoogleSignin.signIn()
+        // const loggedUser = await GoogleSignin.signIn()
+        .then(() => console.log("SIGN IN THEN "))
+        .catch(error => console.log("SIGN IN ERROR ", error))
+        .finally(() => console.log("SIGN IN FINALLY "));
+
+      console.log("SIGN IN 3333 ", idToken);
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // // Sign-in the user with the credential
+      return auth()
+        .signInWithCredential(googleCredential)
+        .then(() => console.log("THEN "))
+        .catch(error => console.log("ERROR ", error))
+        .finally(() => console.log("FINALLY "));
+    } catch (error) {
+      console.log("ERROR CONFIGURE ", error);
+    }
+  }
+
   const handleSignInWithGoogle = async () => {
-    // if (response?.type === "success") {
-    //   const token = response.authentication.accessToken;
-    //   if (!token) return;
-    //   try {
-    //     const response = await fetch(
-    //       "https://www.googleapis.com/userinfo/v2/me",
-    //       {
-    //         headers: { Authorization: `Bearer ${token}` },
-    //       },
-    //     );
-    //     const user = await response.json();
-    //     const newUser = {
-    //       accessToken: user.accessToken,
-    //       email: user.email,
-    //       picture: user.picture,
-    //       given_name: user.given_name,
-    //     };
-    //     AsyncStorage.setItem(StorageKey.USER_KEY, JSON.stringify(newUser));
-    //     dispatch(AuthSlice.actions.loginUser(newUser));
-    //   } catch (error) {
-    //     // add handle error
+    // try {
+    //   await GoogleSignin.hasPlayServices();
+    //   const userInfo = await GoogleSignin.signIn();
+    //   // setState({ userInfo });
+    //   console.log("USER INFO: ", { userInfo });
+    // } catch (error) {
+    //   console.log("SIGN_IN_ERROR: ", error);
+    //   if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+    //     // user cancelled the login flow
+    //   } else if (error.code === statusCodes.IN_PROGRESS) {
+    //     // operation (e.g. sign in) is in progress already
+    //   } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+    //     // play services not available or outdated
+    //   } else {
+    //     // some other error happened
     //   }
-    // } else if (response?.type === "cancel") {
-    //   Alert.alert("Error", "This function don't work with Expo");
+    // }
+    // try {
+    //   await GoogleSignin.hasPlayServices();
+    //   const userInfo = await GoogleSignin.signIn();
+    //   // setState({ userInfo, error: undefined });
+    //   console.log("USER INFO: ", { userInfo, error: undefined });
+    // } catch (error) {
+    //   // console.log("USER ERROR: ", error.message);
+    //   if (error) {
+    //     switch (error.code) {
+    //       case statusCodes.SIGN_IN_CANCELLED:
+    //         // user cancelled the login flow
+    //         console.log("SIGN_IN_CANCELLED: ", error);
+    //         break;
+    //       case statusCodes.IN_PROGRESS:
+    //         // operation (eg. sign in) already in progress
+    //         console.log("IN_PROGRESS: ", error);
+    //         break;
+    //       case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+    //         // play services not available or outdated
+    //         console.log("PLAY_SERVICES_NOT_AVAILABLE: ", error);
+    //         break;
+    //       default:
+    //         console.log("DEFAULT ERROR: ", error);
+    //       // some other error happened
+    //     }
+    //   } else {
+    //     // an error that's not related to google sign in occurred
+    //   }
     // }
   };
+
+  // const handleSignInWithGoogle = async () => {
+  //   // if (response?.type === "success") {
+  //   //   const token = response.authentication.accessToken;
+  //   //   if (!token) return;
+  //   //   try {
+  //   //     const response = await fetch(
+  //   //       "https://www.googleapis.com/userinfo/v2/me",
+  //   //       {
+  //   //         headers: { Authorization: `Bearer ${token}` },
+  //   //       },
+  //   //     );
+  //   //     const user = await response.json();
+  //   //     const newUser = {
+  //   //       accessToken: user.accessToken,
+  //   //       email: user.email,
+  //   //       picture: user.picture,
+  //   //       given_name: user.given_name,
+  //   //     };
+  //   //     AsyncStorage.setItem(StorageKey.USER_KEY, JSON.stringify(newUser));
+  //   //     dispatch(AuthSlice.actions.loginUser(newUser));
+  //   //   } catch (error) {
+  //   //     // add handle error
+  //   //   }
+  //   // } else if (response?.type === "cancel") {
+  //   //   Alert.alert("Error", "This function don't work with Expo");
+  //   // }
+  // };
 
   function handleForgotPassword() {
     setIsLoading(true);
@@ -115,7 +210,7 @@ const Login: React.FC = () => {
       return Alert.alert("Error", error);
     }
 
-    sendPasswordResetEmail(auth, email)
+    sendPasswordResetEmail(authFirebase, email)
       .then(() => Alert.alert("Esqueceu a senha", "Um email foi enviado"))
       .catch(error => {
         Alert.alert("Error", error.message);
@@ -130,7 +225,7 @@ const Login: React.FC = () => {
   return (
     <Container>
       <WelcomeContainer>
-        <NikeLogo source={logo} resizeMode="contain" />
+        <QuickLogo source={logo} resizeMode="contain" />
         <WelcomeText>Welcome to Sneaker Quick</WelcomeText>
         <LoginText>Please login to continue</LoginText>
       </WelcomeContainer>
@@ -166,8 +261,18 @@ const Login: React.FC = () => {
 
       <SocialButtonsContainer>
         {/* <SocialLoginButton name="Google" onPress={() => promptAsync()} /> */}
-        <SocialLoginButton name="Google" />
-        <SocialLoginButton name="Facebook" />
+        <SocialLoginButton name="Google" onPress={handleSignInWithGoogle} />
+        {/* <GoogleSigninButton
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={handleSignInWithGoogle}
+          // onPress={() => {
+          //   // initiate sign in
+          // }}
+          // disabled={isInProgress}
+        /> */}
+
+        <SocialLoginButton name="Facebook" onPress={onGoogleButtonPress} />
       </SocialButtonsContainer>
 
       <ForgotText onPress={handleForgotPassword}>

@@ -14,7 +14,7 @@ export const WelcomeContainer = styled.View`
   justify-content: center;
 `;
 
-export const NikeLogo = styled.Image`
+export const QuickLogo = styled.Image`
   height: ${width * 0.4}px;
   aspect-ratio: 1;
 `;

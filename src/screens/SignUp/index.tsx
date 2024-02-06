@@ -16,7 +16,7 @@ import {
   LoginButton,
   LoginButtonText,
   LoginText,
-  NikeLogo,
+  QuickLogo,
   WelcomeContainer,
   WelcomeText,
 } from "./styles";
@@ -28,7 +28,7 @@ const SignUp: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const logo = require("../../assets/img/nikelogo.png");
+  const logo = require("../../assets/img/QuickLogo.png");
   const navigation = useNavigation();
 
   const handleLoginNavigation = () => {
@@ -72,7 +72,7 @@ const SignUp: React.FC = () => {
   return (
     <Container>
       <WelcomeContainer>
-        <NikeLogo source={logo} resizeMode="contain" />
+        <QuickLogo source={logo} resizeMode="contain" />
         <WelcomeText>Welcome to Sneaker Quick</WelcomeText>
         <LoginText>Create your account to continue</LoginText>
       </WelcomeContainer>
