@@ -6,7 +6,7 @@ const initialState = {
   freeDeliveryFrom: 200,
 };
 
-export const cartSlice = createSlice({
+const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
@@ -61,3 +61,7 @@ export const selectTotal = createSelector(
   selectDeliveryPrice,
   (subtotal, delivery) => subtotal + delivery,
 );
+
+export const { addCartItem, changeQuantity } = cartSlice.actions;
+
+export default cartSlice.reducer;

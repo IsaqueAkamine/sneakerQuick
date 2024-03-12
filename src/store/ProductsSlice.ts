@@ -1,12 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 import products from "../data/products";
 
-const initialState = {
+type ProductProps = {
+  id: string;
+  image: string;
+  images: string[];
+  name: string;
+  price: number;
+  sizes: number[];
+  description: string;
+};
+
+type ProductsState = {
+  products: ProductProps[];
+  selectedProduct: any;
+};
+
+const initialState: ProductsState = {
   products: products,
   selectedProduct: null,
 };
 
-export const productsSlice = createSlice({
+const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
@@ -17,3 +32,7 @@ export const productsSlice = createSlice({
     },
   },
 });
+
+export const { setSelectedProduct } = productsSlice.actions;
+
+export default productsSlice.reducer;

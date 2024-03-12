@@ -1,5 +1,9 @@
 import React from "react";
 import { FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+import { addCartItem } from "../../store/cartSlice";
+import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -14,8 +18,6 @@ import {
   ScrollContainer,
   Title,
 } from "./styles";
-import { cartSlice } from "../../store/cartSlice";
-import { useNavigation } from "@react-navigation/native";
 
 const Product = ({ uri }) => (
   <ImageContainer>
@@ -24,12 +26,14 @@ const Product = ({ uri }) => (
 );
 
 const Details: React.FC = () => {
-  const product = useSelector(state => state.products.selectedProduct);
+  const product = useSelector(
+    (state: RootState) => state.products.selectedProduct,
+  );
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const handleAddToCart = () => {
-    dispatch(cartSlice.actions.addCartItem({ product }));
+    dispatch(addCartItem({ product }));
     navigation.goBack();
   };
 

@@ -3,15 +3,17 @@ import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 
+import { setSelectedProduct } from "../../store/productsSlice";
+import { RootState } from "../../store";
+
 import { Container, Image, ImageButton } from "./styles";
-import { productsSlice } from "../../store/ProductsSlice";
 
 const Product = ({ item }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const handleNavigateToDetails = () => {
-    dispatch(productsSlice.actions.setSelectedProduct(item.id));
+    dispatch(setSelectedProduct(item.id));
     navigation.navigate("Details");
   };
 
@@ -23,7 +25,7 @@ const Product = ({ item }) => {
 };
 
 const Products: React.FC = () => {
-  const products = useSelector(state => state.products.products);
+  const products = useSelector((state: RootState) => state.products.products);
 
   return (
     <Container>

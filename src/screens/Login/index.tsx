@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../services/firebaseConfig";
 
-import { AuthSlice } from "../../store/AuthSlice";
+import { loginUser } from "../../store/authSlice";
 import StorageKey from "../../enums/StorageKeys";
 
 import Input from "../../components/Input";
@@ -59,7 +59,7 @@ const Login: React.FC = () => {
         };
         // // ...
         AsyncStorage.setItem(StorageKey.USER_KEY, JSON.stringify(user));
-        dispatch(AuthSlice.actions.loginUser(user));
+        dispatch(loginUser(user));
       })
       .catch(error => {
         Alert.alert("Error", error.message);

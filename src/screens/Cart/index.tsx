@@ -7,6 +7,7 @@ import {
   selectSubtotal,
   selectTotal,
 } from "../../store/cartSlice";
+import { RootState } from "../../store";
 
 import CartListItem from "../../components/CartListItem";
 
@@ -22,7 +23,7 @@ import {
 } from "./styles";
 
 const Cart: React.FC = () => {
-  const cartItems = useSelector(state => state.cart.items);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const subTotal = useSelector(selectSubtotal);
   const deliveryFee = useSelector(selectDeliveryPrice);
   const total = useSelector(selectTotal);

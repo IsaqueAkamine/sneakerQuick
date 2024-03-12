@@ -15,17 +15,18 @@ import {
 } from "react-native-heroicons/outline";
 
 import { selectNumberOfItems } from "../store/cartSlice";
-import { AuthSlice } from "../store/AuthSlice";
+import { logout } from "../store/authSlice";
+import { RootState } from "../store";
 import StorageKey from "../enums/StorageKeys";
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const handleLogout = async () => {
-    dispatch(AuthSlice.actions.logout());
+    dispatch(logout());
     await AsyncStorage.removeItem(StorageKey.USER_KEY);
   };
 

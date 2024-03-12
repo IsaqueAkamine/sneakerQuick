@@ -4,13 +4,13 @@ import {
   PlusCircleIcon,
 } from "react-native-heroicons/outline";
 import { useDispatch } from "react-redux";
-import { cartSlice } from "../store/cartSlice";
+import { changeQuantity } from "../store/cartSlice";
 
 const CartListItem = ({ cartItem }) => {
   const dispatch = useDispatch();
   const increaseQuantity = () => {
     dispatch(
-      cartSlice.actions.changeQuantity({
+      changeQuantity({
         productId: cartItem.product.id,
         amount: 1,
       }),
@@ -19,7 +19,7 @@ const CartListItem = ({ cartItem }) => {
 
   const decreaseQuantity = () => {
     dispatch(
-      cartSlice.actions.changeQuantity({
+      changeQuantity({
         productId: cartItem.product.id,
         amount: -1,
       }),
