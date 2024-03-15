@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { Dimensions } from "react-native";
+import { Dimensions, Text } from "react-native";
 
 const { width } = Dimensions.get("window");
 
@@ -23,7 +23,7 @@ export const InfoContainer = styled.View`
   padding: 20px 20px 30% 20px;
 `;
 
-export const Title = styled.Text`
+export const Title = styled(Text)`
   font-size: 34px;
   font-weight: 500;
   margin: 10px 0;

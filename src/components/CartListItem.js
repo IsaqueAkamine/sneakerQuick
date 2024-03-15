@@ -28,7 +28,11 @@ const CartListItem = ({ cartItem }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: cartItem.product.image }} style={styles.image} />
+      <Image
+        source={{ uri: cartItem.product.image }}
+        style={styles.image}
+        resizeMode="contain"
+      />
       <View style={styles.contentContainer}>
         <Text style={styles.name}>{cartItem.product.name}</Text>
         <Text style={styles.size}>Size {cartItem.size}</Text>
@@ -38,7 +42,7 @@ const CartListItem = ({ cartItem }) => {
           <Text style={styles.quantity}>{cartItem.quantity}</Text>
           <PlusCircleIcon onPress={increaseQuantity} size={24} color="gray" />
           <Text style={styles.itemTotal}>
-            $ {cartItem.product.price * cartItem.quantity}
+            $ {cartItem.product.base_price * cartItem.quantity}
           </Text>
         </View>
       </View>

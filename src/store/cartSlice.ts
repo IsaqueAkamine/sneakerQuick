@@ -43,7 +43,7 @@ export const selectNumberOfItems = state => state.cart.items.length;
 
 export const selectSubtotal = state =>
   state.cart.items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
+    (sum, item) => sum + item.product.base_price * item.quantity,
     0,
   );
 

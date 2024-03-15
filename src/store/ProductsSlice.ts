@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import products from "../data/products";
+import api from "../services/api";
 
 type ProductProps = {
   id: string;
@@ -13,23 +14,44 @@ type ProductProps = {
 
 type ProductsState = {
   products: ProductProps[];
+  productsSneaker: any[];
   selectedProduct: any;
 };
 
 const initialState: ProductsState = {
   products: products,
+  productsSneaker: [],
   selectedProduct: null,
 };
+
+export const fetchProducts = createAsyncThunk(
+  "products/fetch",
+  async thunkAPI => {
+    try {
+      const response = await api.get("/search", {
+        params: { query: "Adidas Forum, Nike Air" },
+      });
+
+      const { hits } = response.data;
+      return hits;
+    } catch (error: any) {
+      return error.message;
+    }
+  },
+);
 
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
     setSelectedProduct: (state, action) => {
-      state.selectedProduct = state.products.find(
-        product => product.id === action.payload,
-      );
+      state.selectedProduct = action.payload;
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(fetchProducts.fulfilled, (state, action) => {
+      state.productsSneaker = action.payload;
+    });
   },
 });
 

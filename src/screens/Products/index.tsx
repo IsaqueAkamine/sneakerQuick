@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
 
-import { setSelectedProduct } from "../../store/productsSlice";
-import { RootState, useAppDispatch } from "../../store";
+import { fetchProducts, setSelectedProduct } from "../../store/productsSlice";
+import { useAppDispatch, useAppSelector } from "../../store";
 
 import { Container, Image, ImageButton } from "./styles";
 
@@ -13,24 +12,29 @@ const Product = ({ item }) => {
   const dispatch = useAppDispatch();
 
   const handleNavigateToDetails = () => {
-    dispatch(setSelectedProduct(item.id));
+    dispatch(setSelectedProduct(item));
     navigation.navigate("Details");
   };
 
   return (
     <ImageButton onPress={handleNavigateToDetails}>
-      <Image source={{ uri: item.image }} />
+      <Image source={{ uri: item.image }} resizeMode="contain" />
     </ImageButton>
   );
 };
 
 const Products: React.FC = () => {
-  const products = useSelector((state: RootState) => state.products.products);
+  const { productsSneaker } = useAppSelector(state => state.products);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
 
   return (
     <Container>
       <FlatList
-        data={products}
+        data={productsSneaker}
         renderItem={({ item, index }) => <Product item={item} />}
         numColumns={2}
         showsVerticalScrollIndicator={false}

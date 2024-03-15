@@ -1,10 +1,10 @@
 import React from "react";
-import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { addCartItem } from "../../store/cartSlice";
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
+import { capitalizeFirstLetter } from "../../utils";
 
 import {
   AddCartButton,
@@ -21,7 +21,7 @@ import {
 
 const Product = ({ uri }) => (
   <ImageContainer>
-    <Image source={{ uri }} />
+    <Image source={{ uri }} resizeMode="contain" />
   </ImageContainer>
 );
 
@@ -40,21 +40,13 @@ const Details: React.FC = () => {
   return (
     <Container>
       <ScrollContainer showsVerticalScrollIndicator={false}>
-        {/* Image Carousel */}
-        <FlatList
-          data={product.images}
-          renderItem={({ item }) => <Product uri={item} />}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          pagingEnabled
-        />
-
+        <Product uri={product.image} />
         <InfoContainer>
           {/* Title */}
-          <Title>{product.name}</Title>
+          <Title>{capitalizeFirstLetter(product.title)}</Title>
 
           {/* Price */}
-          <Price>$ {product.price}</Price>
+          <Price>$ {product.base_price}</Price>
 
           {/* Description */}
           <Description>{product.description}</Description>
@@ -65,8 +57,6 @@ const Details: React.FC = () => {
       <AddCartButton onPress={handleAddToCart}>
         <AddCartText>Add to cart</AddCartText>
       </AddCartButton>
-
-      {/* Navigation icon */}
     </Container>
   );
 };
