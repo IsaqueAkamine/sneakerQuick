@@ -2,10 +2,21 @@ import React, { useEffect } from "react";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { fetchProducts, setSelectedProduct } from "../../store/productsSlice";
+import {
+  fetchProducts,
+  fetchProductsByBrand,
+  setSelectedProduct,
+} from "../../store/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
 
-import { Container, Image, ImageButton } from "./styles";
+import {
+  Container,
+  FilterContainer,
+  FilterInput,
+  Image,
+  ImageButton,
+} from "./styles";
 
 const Product = ({ item }) => {
   const navigation = useNavigation();
@@ -18,8 +29,30 @@ const Product = ({ item }) => {
 
   return (
     <ImageButton onPress={handleNavigateToDetails}>
-      <Image source={{ uri: item.image }} resizeMode="contain" />
+      {item.image && (
+        <Image source={{ uri: item.image }} resizeMode="contain" />
+      )}
     </ImageButton>
+  );
+};
+
+const FilterByBrand = () => {
+  const dispatch = useAppDispatch();
+
+  let filterText = "";
+  return (
+    <FilterContainer>
+      <MagnifyingGlassIcon />
+      <FilterInput
+        placeholder="Search by brand"
+        onChangeText={text => {
+          filterText = text;
+        }}
+        onSubmitEditing={() => {
+          dispatch(fetchProductsByBrand(filterText));
+        }}
+      />
+    </FilterContainer>
   );
 };
 
@@ -39,6 +72,7 @@ const Products: React.FC = () => {
         numColumns={2}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 30 }}
+        ListHeaderComponent={<FilterByBrand />}
       />
     </Container>
   );

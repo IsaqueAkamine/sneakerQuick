@@ -29,7 +29,23 @@ export const fetchProducts = createAsyncThunk(
   async thunkAPI => {
     try {
       const response = await api.get("/search", {
-        params: { query: "Adidas Forum, Nike Air" },
+        params: { query: "sneaker" },
+      });
+
+      const { hits } = response.data;
+      return hits;
+    } catch (error: any) {
+      return error.message;
+    }
+  },
+);
+
+export const fetchProductsByBrand = createAsyncThunk(
+  "products/fetchByBrand",
+  async (thunkAPI: string) => {
+    try {
+      const response = await api.get("/search", {
+        params: { query: `${thunkAPI} Shoes` },
       });
 
       const { hits } = response.data;
@@ -49,9 +65,13 @@ const productsSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.productsSneaker = action.payload;
-    });
+    builder
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.productsSneaker = action.payload;
+      })
+      .addCase(fetchProductsByBrand.fulfilled, (state, action) => {
+        state.productsSneaker = action.payload;
+      });
   },
 });
 

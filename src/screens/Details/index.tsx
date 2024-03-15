@@ -37,6 +37,8 @@ const Details: React.FC = () => {
     navigation.goBack();
   };
 
+  console.log("PRODUCT DETAIL => ", product);
+
   return (
     <Container>
       <ScrollContainer showsVerticalScrollIndicator={false}>
