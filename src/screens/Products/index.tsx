@@ -1,16 +1,16 @@
 import React from "react";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { setSelectedProduct } from "../../store/productsSlice";
-import { RootState } from "../../store";
+import { RootState, useAppDispatch } from "../../store";
 
 import { Container, Image, ImageButton } from "./styles";
 
 const Product = ({ item }) => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleNavigateToDetails = () => {
     dispatch(setSelectedProduct(item.id));
