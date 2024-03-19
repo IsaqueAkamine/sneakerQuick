@@ -6,7 +6,7 @@ import {
   fetchProducts,
   fetchProductsByBrand,
   setSelectedProduct,
-} from "../../store/productsSlice";
+} from "../../store/ProductsSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
 

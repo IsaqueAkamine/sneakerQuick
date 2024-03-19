@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";
 
-import { init as initAuth } from "../store/authSlice";
+import { init as initAuth } from "../store/AuthSlice";
 import { ActivityIndicator, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import StorageKey from "../enums/StorageKeys";
