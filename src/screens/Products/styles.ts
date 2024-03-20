@@ -30,5 +30,5 @@ export const FilterContainer = styled.View`
 
 export const FilterInput = styled.TextInput`
   flex: 1;
-  height: 26px;
+  height: 36px;
 `;

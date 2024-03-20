@@ -42,7 +42,7 @@ const FilterByBrand = () => {
   let filterText = "";
   return (
     <FilterContainer>
-      <MagnifyingGlassIcon />
+      <MagnifyingGlassIcon size={26} color="#007bff" />
       <FilterInput
         placeholder="Search by brand"
         onChangeText={text => {
