@@ -34,6 +34,13 @@ export const Price = styled.Text`
   font-size: 16px;
 `;
 
+export const SizeContainer = styled.View`
+  margin: 4px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
+`;
+
 export const Description = styled.Text`
   font-size: 18px;
   font-weight: 300;

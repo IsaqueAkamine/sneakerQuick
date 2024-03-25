@@ -6,6 +6,8 @@ import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { capitalizeFirstLetter } from "../../utils";
 
+import SneakerSize from "../../components/SneakerSize";
+
 import {
   AddCartButton,
   AddCartText,
@@ -16,6 +18,7 @@ import {
   InfoContainer,
   Price,
   ScrollContainer,
+  SizeContainer,
   Title,
 } from "./styles";
 
@@ -29,6 +32,7 @@ const Details: React.FC = () => {
   const product = useSelector(
     (state: RootState) => state.products.selectedProduct,
   );
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -47,6 +51,12 @@ const Details: React.FC = () => {
 
           {/* Price */}
           <Price>$ {product.base_price}</Price>
+
+          <SizeContainer>
+            {product.variants.map((item, index) => {
+              return <SneakerSize size={item.size} key={index.toString()} />;
+            })}
+          </SizeContainer>
 
           {/* Description */}
           <Description>{product.description}</Description>
