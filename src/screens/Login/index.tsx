@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../services/firebaseConfig";
 
-import { loginUser } from "../../store/AuthSlice";
+import { loginUser } from "../../store/authSlice";
 import StorageKey from "../../enums/StorageKeys";
 
 import Input from "../../components/Input";

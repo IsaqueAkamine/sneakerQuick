@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import productsSlice from "./ProductsSlice";
+import productsSlice from "./productsSlice";
 import cartSlice from "./cartSlice";
-import authSlice from "./AuthSlice";
+import authSlice from "./authSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,10 +11,6 @@ export const store = configureStore({
     auth: authSlice,
   },
 });
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
-// export const useAppDispatch: () => typeof store.dispatch = useDispatch;
 
 export type RootState = ReturnType<typeof store.getState>;
 export const useAppDispatch: () => typeof store.dispatch = useDispatch;

@@ -15,7 +15,7 @@ import {
 } from "react-native-heroicons/outline";
 
 import { selectNumberOfItems } from "../store/cartSlice";
-import { logout } from "../store/AuthSlice";
+import { logout } from "../store/authSlice";
 import { RootState } from "../store";
 import StorageKey from "../enums/StorageKeys";
 
