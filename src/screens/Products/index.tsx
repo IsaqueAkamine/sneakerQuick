@@ -10,6 +10,9 @@ import {
 import { useAppDispatch, useAppSelector } from "../../store";
 import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
 
+import Loading from "../../components/Loading";
+import ErrorMessage from "../../components/ErrorMessage";
+
 import {
   Container,
   FilterContainer,
@@ -57,23 +60,37 @@ const FilterByBrand = () => {
 };
 
 const Products: React.FC = () => {
-  const { productsSneaker } = useAppSelector(state => state.products);
+  const { productsSneaker, status, error } = useAppSelector(
+    state => state.products,
+  );
   const dispatch = useAppDispatch();
 
+  function Content() {
+    if (status === "loading") {
+      return <Loading />;
+    } else if (status === "succeeded") {
+      return (
+        <FlatList
+          data={productsSneaker}
+          renderItem={({ item, index }) => <Product item={item} />}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 30 }}
+          ListHeaderComponent={<FilterByBrand />}
+        />
+      );
+    } else if (error === "failed") {
+      return <ErrorMessage error={error} />;
+    }
+  }
+
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, []);
+    if (status === "idle") dispatch(fetchProducts());
+  }, [status, dispatch]);
 
   return (
     <Container>
-      <FlatList
-        data={productsSneaker}
-        renderItem={({ item, index }) => <Product item={item} />}
-        numColumns={2}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 30 }}
-        ListHeaderComponent={<FilterByBrand />}
-      />
+      <Content />
     </Container>
   );
 };

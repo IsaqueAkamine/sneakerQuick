@@ -16,12 +16,16 @@ type ProductsState = {
   products: ProductProps[];
   productsSneaker: any[];
   selectedProduct: any;
+  status: string;
+  error: string | undefined;
 };
 
 const initialState: ProductsState = {
   products: products,
   productsSneaker: [],
   selectedProduct: null,
+  status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
+  error: "",
 };
 
 export const fetchProducts = createAsyncThunk(
@@ -67,14 +71,33 @@ const productsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.productsSneaker = action.payload;
       })
+      .addCase(fetchProducts.pending, state => {
+        state.status = "loading";
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
       .addCase(fetchProductsByBrand.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.productsSneaker = action.payload;
+      })
+      .addCase(fetchProductsByBrand.pending, state => {
+        state.status = "loading";
+      })
+      .addCase(fetchProductsByBrand.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });
 
 export const { setSelectedProduct } = productsSlice.actions;
+
+export const getProductsStatus = (state: ProductsState) => state.status;
+export const getProductsError = (state: ProductsState) => state.error;
 
 export default productsSlice.reducer;
